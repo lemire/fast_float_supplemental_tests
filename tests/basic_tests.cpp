@@ -9,6 +9,7 @@
 #include <dirent.h>
 #include <fstream>
 #include <string>
+#include <iostream>
 
 static bool has_extension(const char *filename, const char *extension) {
   const char *ext = strrchr(filename, '.');
@@ -82,7 +83,7 @@ bool check_file(std::string file_name) {
         number++;
       }
     }
-    std::cout << "checked " << number << " values" << std::endl;
+    std::cout << "checked " << std::defaultfloat << number << " values" << std::endl;
     newfile.close(); // close the file object
   } else {
     std::cout << "Could not read  " << file_name << std::endl;
@@ -110,7 +111,7 @@ bool validate(const char *dirname) {
   bool needsep = (strlen(dirname) > 1) && (dirname[strlen(dirname) - 1] != '/');
   for (int i = 0; i < c; i++) {
     const char *name = entry_list[i]->d_name;
-    if (has_extension(name, extension)) {
+    if (has_extension(name, extension) && (::strncmp("CMake", name, 5) != 0)) {
       size_t filelen = std::strlen(name);
       char *fullpath = (char *)malloc(dirlen + filelen + 1 + 1);
       strcpy(fullpath, dirname);
